@@ -31,12 +31,17 @@ C'est normal : suivez la section 3.
   l'établissement) ;
 - identifiant et mot de passe de l'espace client : en général le code
   **UAI/RNE** de l'établissement et le mot de passe associé ;
-- serveur Debian 11/12/13 **x86_64** (l'image BCDI est 32 bits) ;
+- serveur Debian 11/12/13 **64 bits** (`amd64`/`x86_64`) ; l'image BCDI
+  est en `i386` (32 bits) ;
 - accès Internet pour le téléchargement, le griffage et les mises à jour ;
+- un hôte ARM64 nécessite une émulation x86, non fournie par ce kit ;
 - Docker Engine et le plugin Compose v2 (ou `installer-hote.sh`).
 
 Le compte espace client est propre à l'établissement : ne pas utiliser celui
 d'un autre site et ne jamais transmettre ses identifiants.
+
+Le kit a été validé en production sur **Debian 13.7.0 amd64**, à partir
+d'une installation fraîche de `debian-13.7.0-amd64-netinst.iso`.
 
 ## 3. Obtenir les logiciels et la licence
 
@@ -106,7 +111,7 @@ sudo ./installer-hote.sh
 
 Le script :
 
-- vérifie Debian et l'architecture x86_64 ;
+- vérifie Debian et l'architecture 64 bits (`x86_64`) ;
 - installe la clé et le dépôt Docker officiels ;
 - installe `docker-ce`, `docker-ce-cli`, `containerd.io`,
   `docker-buildx-plugin` et `docker-compose-plugin` ;

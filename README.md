@@ -1,8 +1,8 @@
 # BCDI sous Docker
 
 Kit de déploiement du **serveur BCDI** (Réseau Canopé) sur un hôte Debian
-x86_64, avec Docker Compose, sauvegardes, mise à jour et reprise d'une
-installation existante.
+64 bits (`amd64`/`x86_64`), avec Docker Compose, sauvegardes, mise à jour et
+reprise d'une installation existante.
 
 > [!IMPORTANT]
 > Ce dépôt ne contient **aucun logiciel Canopé**, aucune archive
@@ -38,8 +38,9 @@ installation existante.
 ## Prérequis
 
 - Un abonnement BCDI actif et un accès à l'espace client Canopé.
-- Un serveur **Debian 11, 12 ou 13**, architecture `x86_64`. ARM n'est pas
-  supporté : l'image BCDI est 32 bits x86.
+- Un serveur **Debian 11, 12 ou 13**, 64 bits (`amd64`/`x86_64`). L'hôte n'a
+  pas besoin d'être 32 bits : seule l'image Docker est en `i386` (x86 32 bits).
+- Un hôte ARM64 nécessite une émulation x86, non fournie par ce kit.
 - Docker Engine et le plugin Compose v2.
 - Un accès Internet pour le griffage et les mises à jour.
 - Les deux paquets Canopé suivants, placés dans `sources/` :
@@ -50,6 +51,11 @@ installation existante.
 | `maj_bcdi-abt_2.66_cl.tar.gz` | mise à jour 2.66 |
 
 Les noms sont vérifiés par `deployer.sh`. Si Canopé fournit des noms différents, renommez les fichiers ou adaptez les contrôles du script.
+
+### Environnement validé
+
+Le kit a été validé en production sur **Debian 13.7.0 amd64**, à partir
+d'une installation fraîche de `debian-13.7.0-amd64-netinst.iso`.
 
 ## Démarrage rapide
 
@@ -193,10 +199,14 @@ L'image est construite depuis `i386/debian:stretch-slim`. Les certificats TLS so
 
 ## Limites connues
 
-- L'image ne fonctionne que sur `x86_64` (userland 32 bits).
+- L'image est en `i386` (userland 32 bits) ; elle s'exécute nativement sur
+  un hôte `amd64`/`x86_64`. Aucun système 32 bits n'est nécessaire.
 - Le serveur BCDI est un logiciel ancien ; les mises à jour Canopé sont interactives et peuvent dépendre de l'accès Internet.
 - Le griffage réécrit la licence avant validation : une sauvegarde de `VersionBcdi.Txt` est faite automatiquement, mais un code refusé laisse le serveur sans licence active jusqu'à restauration.
-- Aucun test automatisé d'installation complète n'est fourni : validez toujours sur un serveur de test avant la production.
+- Aucun test automatisé d'installation complète n'est fourni. Une installation
+  réelle a toutefois été validée en production sur Debian 13.7.0 amd64
+  (netinst) ; validez toujours sur un serveur de test avant une nouvelle mise
+  en production.
 - Le dépôt ne contient pas les paquets Canopé ; sans eux, `deployer.sh` s'arrête avec un message explicite.
 
 ## Licence
