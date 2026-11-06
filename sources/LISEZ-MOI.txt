@@ -1,0 +1,26 @@
+Archives Canopé attendues dans ce dépôt
+=======================================
+
+Ce dépôt ne contient AUCUNE archive Canopé : elles sont propriétaires et
+doivent être téléchargées par l'établissement abonné depuis son espace client.
+
+Placer ici les deux fichiers suivants, avec exactement ces noms :
+
+- serveurBcdiabtlinux.inst-2.52.tar.gz
+    Installation du serveur BCDI 2.52 (installbcdi.sh + srvbcdiabt.tar.gz).
+
+- maj_bcdi-abt_2.66_cl.tar.gz
+    Mise à jour 2.66 (install_majbcdi-abt.sh + source/).
+
+Vérification de l'intégrité (facultatif) :
+
+    cd sources && sha256sum *.tar.gz > SHA256SUMS
+    sha256sum -c SHA256SUMS
+
+Ces archives sont la propriété du Réseau Canopé et réservées aux abonnés.
+Ne pas les publier, les versionner ni les transmettre à un établissement non
+abonné. L'image Docker, elle, ne contient aucun binaire BCDI.
+
+Le code d'orchestration de ce dépôt est distribué sous GPL-3.0-only (voir
+LICENSE) ; les archives Canopé ci-dessus ne sont pas couvertes par cette
+licence.

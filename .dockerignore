@@ -1,0 +1,21 @@
+# Contexte de build minimal : le code et les scripts uniquement.
+.git
+.github
+.freebuff
+.env
+.env.*
+!.env.example
+data
+DATA
+backups
+sources
+docs
+README.md
+NOTICE.md
+*.md
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.sha256
+*.log

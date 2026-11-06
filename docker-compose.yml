@@ -1,0 +1,70 @@
+# docker-compose.yml — service unique « bcdi » du kit de déploiement.
+#
+# Projet Compose : bcdi (conteneur bcdi, réseau bcdi_default).
+#
+# Volumes, relatifs à la racine du dépôt :
+#   ./data/bcdiserv -> /usr/bcdiserv   installation : bases, prog, licence
+#   ./backups       -> /home/gestbcdi  archives de sauvegarde (HOME BCDI)
+#   ./sources       -> /sources:ro     paquets Canopé, en lecture seule
+#
+# Le port interne est toujours 9000 (valeur écrite par l'installeur dans
+# prog/ServConf.txt) ; BCDI_HOST_PORT ne change que la publication sur l'hôte.
+#
+# Commandes usuelles :
+#   docker compose build
+#   docker compose run --rm bcdi install|maj|griffer|sauvegarde|statut
+#   docker compose up -d / stop / logs -f bcdi
+#
+# Les variables ${...} sont lues dans .env (voir .env.example et docs/EXPLOITATION.md).
+name: bcdi
+
+services:
+  bcdi:
+    build:
+      context: .
+      args:
+        PUID: ${PUID:-1000}
+        PGID: ${PGID:-1000}
+    image: bcdi-serveur:latest
+    container_name: bcdi
+    hostname: ${BCDI_HOSTNAME:-bcdi}
+    init: true
+    restart: unless-stopped
+
+    ports:
+      # Le serveur écoute toujours sur 9000 dans le conteneur (valeur écrite
+      # dans prog/ServConf.txt à l'installation) ; seul le port publié varie.
+      - "${BCDI_HOST_PORT:-9000}:9000"
+
+    environment:
+      TZ: ${TZ:-Europe/Paris}
+      # Permet de reprendre une installation existante à un autre emplacement
+      # (par exemple /home/bcdiserv). Laisser vide pour le défaut Canopé.
+      BCDI_HOME: ${BCDI_HOME:-/usr/bcdiserv}
+      BACKUP_KEEP_DAYS: ${BACKUP_KEEP_DAYS:-30}
+      # Licence : si les deux variables sont renseignées, l'installation est
+      # réalisée sans interaction. Sinon l'installeur pose les questions.
+      BCDI_ETABLISSEMENT: ${BCDI_ETABLISSEMENT:-}
+      BCDI_GRIFFE: ${BCDI_GRIFFE:-}
+      BCDI_MAIL_ADMIN: ${BCDI_MAIL_ADMIN:-}
+      # Réinstallation complète (efface bases et griffe) : BCDI_REINSTALL=1.
+      BCDI_REINSTALL: ${BCDI_REINSTALL:-0}
+
+    volumes:
+      # Base(s) et programme BCDI : à sauvegarder, c'est le cœur du serveur.
+      - ./data/bcdiserv:${BCDI_HOME:-/usr/bcdiserv}
+      # Dossier de sauvegardes (aussi $HOME de gestbcdi, défaut Canopé).
+      - ./backups:/home/gestbcdi
+      # Paquets d'installation et de mise à jour (lecture seule).
+      - ./sources:/sources:ro
+
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck.sh"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+    # Le serveur BCDI s'arrête proprement sur SIGINT (cf. prog/consolebcdi).
+    stop_signal: SIGINT
+    stop_grace_period: 60s

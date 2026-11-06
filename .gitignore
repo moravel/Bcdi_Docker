@@ -1,0 +1,25 @@
+# Secrets et configuration locale
+.env
+.env.*
+!.env.example
+
+# Données BCDI, sauvegardes et migration
+data/
+backups/
+DATA/
+
+# Archives Canopé (propriétaires) et exports
+sources/*
+!sources/LISEZ-MOI.txt
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.sha256
+
+# Journaux et divers
+*.log
+.DS_Store
+.idea/
+.vscode/
+__pycache__/
