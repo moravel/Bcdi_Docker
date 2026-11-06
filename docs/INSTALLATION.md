@@ -71,7 +71,7 @@ Le dépôt attend deux fichiers, dont les noms sont vérifiés par
 | `maj_bcdi-abt_2.66_cl.tar.gz` | paquet de mise à jour 2.66 |
 
 ```bash
-cd /chemin/vers/le-depot
+cd /chemin/vers/Bcdi_Docker
 mkdir -p sources
 cp /chemin/vers/serveurBcdiabtlinux.inst-2.52.tar.gz sources/
 cp /chemin/vers/maj_bcdi-abt_2.66_cl.tar.gz sources/

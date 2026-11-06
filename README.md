@@ -56,8 +56,8 @@ Les noms sont vérifiés par `deployer.sh`. Si Canopé fournit des noms différe
 ### 1. Récupérer le dépôt
 
 ```
-git clone https://github.com/<compte>/<depot>.git
-cd <depot>
+git clone https://github.com/moravel/Bcdi_Docker.git
+cd Bcdi_Docker
 ```
 
 ### 2. Fournir les paquets Canopé
